@@ -16,7 +16,7 @@ const SignupLayout = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('http://localhost:4000/signup', {
+      const response = await fetch(`https://ecoproject-backendd.onrender.com/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),

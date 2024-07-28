@@ -7,7 +7,7 @@ function ProductSection() {
   
 
   useEffect(() => {
-    fetch('http://localhost:4000/newcollections')
+    fetch(`https://ecoproject-backendd.onrender.com/newcollections`)
       .then(response => response.json())
       .then(data => setNewCollections(data))
       .catch(error => console.error(error));

@@ -42,7 +42,7 @@ function Checkout() {
     };
 
     // Save data to backend server
-    axios.post('http://localhost:4000/save-orderinfo', data)
+    axios.post(`https://ecoproject-backendd.onrender.com/save-orderinfo`, data)
       .then((response) => {
         console.log(response);
         navigate('/OrderPayment'); // Redirect to the OrderPayment page
