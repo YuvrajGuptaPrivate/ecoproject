@@ -6,7 +6,8 @@
   
   "main": "index.js",
   
-  "scripts": {  
+  "scripts": {
+  
     
   "test": "echo \"Error: no test specified\" && exit 1"
   
@@ -19,6 +20,9 @@
   "description": "",
   
   "dependencies": {
+  
+    
+  "argon2": "^0.40.3",
   
     
   "bcrypt": "^5.1.1",
