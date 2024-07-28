@@ -8,7 +8,7 @@ const path =require("path");
 const cors = require("cors");
 const { type } = require("os");
 const { error } = require("console");
-const bcrypt = require('bcrypt');
+const argon2 = require('argon2');
 const crypto = require("crypto");
 
 
@@ -144,7 +144,7 @@ app.get('/allproducts',async (req,res)=>{
 })
 
 
-// Shema creating for user model
+/// Schema creating for user model
 
 const Users = mongoose.model('Users',{
     name:{
@@ -166,24 +166,24 @@ const Users = mongoose.model('Users',{
     }
 })
 
-//Api for creating ednpoint for registering the user
- app.post('/signup',async(req,res)=>{
+// Api for creating endpoint for registering the user
+app.post('/signup',async(req,res)=>{
 
     let check = await Users.findOne({email:req.body.email});
     if(check){
-        return res.status(400).json({success:false,errors:"Existing user found with same emmail address"})
+        return res.status(400).json({success:false,errors:"Existing user found with same email address"})
     }
     let cart = {};
     for (let i=0; i<300;i++){
         cart[i]=0;
     }
+    const hashedPassword = await argon2.hash(req.body.password);
     const user = new Users({
         name:req.body.username,
         email:req.body.email,
-        password:req.body.password,
+        password:hashedPassword,
         cartData:cart,
     })
-
 
     await user.save();
 
@@ -193,17 +193,11 @@ const Users = mongoose.model('Users',{
         }
     }
 
-
     const token = jwt.sign(data,'secret_ecom');
     res.json({success:true,token})
-
-
 })
 
-
-//creating endpoint for user login
-
-
+// Creating endpoint for user login
 app.post('/login', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -214,7 +208,7 @@ app.post('/login', async (req, res) => {
   }
 
   const hashedPassword = user.password;
-  const isValidPassword = bcrypt.compare(password, hashedPassword);
+  const isValidPassword = await argon2.verify(hashedPassword, password);
   if (!isValidPassword) {
     return res.json({ success: false, errors: 'Wrong Password' });
   }
@@ -227,6 +221,9 @@ app.post('/login', async (req, res) => {
   const token = jwt.sign(data, 'secret_ecom');
   res.json({ success: true, token });
 });
+
+
+
 
 //Creating endpoint for new collection data
 app.get('/newcollections',async(req,res)=>{
