@@ -6,11 +6,7 @@
   
   "main": "index.js",
   
-  "scripts": {
-  
-    
-  "rebuild-bcrypt": "node-gyp rebuild bcrypt",
-  
+  "scripts": {  
     
   "test": "echo \"Error: no test specified\" && exit 1"
   
