@@ -11,7 +11,7 @@ function ShopContent() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`https://ecoproject-backendd.onrender.com/allproducts`);
+        const response = await fetch('http://localhost:4000/allproducts');
         const data = await response.json();
         setProducts(data);
       } catch (error) {
