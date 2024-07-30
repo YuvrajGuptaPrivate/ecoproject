@@ -73,7 +73,7 @@ useEffect(() => {
   const addToCart = (itemId) => {
     setCartItems((prev) => ({...prev, [itemId]: (prev[itemId] || 0) + 1}));
     if(localStorage.getItem('token')){
-      fetch('http://localhost:4000/addtocart',{
+      fetch(`https://ecoproject-backendd.onrender.com/addtocart`,{
         method:'POST',
         headers:{
           Accept:'application/json',
