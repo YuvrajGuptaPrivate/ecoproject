@@ -22,7 +22,7 @@ const OrderPayment = () => {
           }, []);
 
         const paymenthandler = async()=>{
-            const response = await fetch("http://localhost:4000/order",{
+            const response = await fetch("https://ecoproject-backendd.onrender.com/order",{
                 method:"POST",
                 body: JSON.stringify({
                     amount,
@@ -48,7 +48,7 @@ const OrderPayment = () => {
                     const body = {
                         ...response,
                     }
-                    const validateRes = await fetch("http://localhost:4000/order/validate",{
+                    const validateRes = await fetch("https://ecoproject-backendd.onrender.com/order/validate",{
                         method:"POST",
                         body: JSON.stringify(body),
                         headers:{

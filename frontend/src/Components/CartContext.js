@@ -37,7 +37,7 @@ useEffect(() => {
     const token = localStorage.getItem('token');
   if (token) {
     try {
-      const response = await fetch('http://localhost:4000/getcart', {
+      const response = await fetch('https://ecoproject-backendd.onrender.com/getcart', {
         method:'POST',
         headers: {
           Accept: 'application/json',
@@ -60,7 +60,7 @@ useEffect(() => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:4000/allproducts');
+      const response = await fetch('https://ecoproject-backendd.onrender.com/allproducts');
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -73,7 +73,7 @@ useEffect(() => {
   const addToCart = (itemId) => {
     setCartItems((prev) => ({...prev, [itemId]: (prev[itemId] || 0) + 1}));
     if(localStorage.getItem('token')){
-      fetch('http://localhost:4000/addtocart',{
+      fetch('https://ecoproject-backendd.onrender.com/addtocart',{
         method:'POST',
         headers:{
           Accept:'application/json',
@@ -99,7 +99,7 @@ useEffect(() => {
     });
 
     if(localStorage.getItem('token')){
-      fetch('http://localhost:4000/removefromcart',{
+      fetch('https://ecoproject-backendd.onrender.com/removefromcart',{
         method:'POST',
         headers:{
           Accept:'application/form-data',
