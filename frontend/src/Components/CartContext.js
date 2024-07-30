@@ -60,7 +60,7 @@ useEffect(() => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:4000/allproducts');
+      const response = await fetch(`https://ecoproject-backendd.onrender.com/allproducts`);
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -99,7 +99,7 @@ useEffect(() => {
     });
 
     if(localStorage.getItem('token')){
-      fetch('http://localhost:4000/removefromcart',{
+      fetch(`https://ecoproject-backendd.onrender.com/removefromcart`,{
         method:'POST',
         headers:{
           Accept:'application/form-data',
