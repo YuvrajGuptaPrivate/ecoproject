@@ -19,13 +19,7 @@ const Hero = () => {
                   </a>
                   <a href="https://maps.app.goo.gl/M6Az6iyxJoPidzfDA" className="btn btn-white-outline">Visit Our Offline Store</a>
                   </div>
-                  <p>
-                    <p>
-                      <p>
-
-                      </p>
-                    </p>
-                  </p>
+                  <br/>
             </div>
           </div>
           <div className="col-lg-7">
