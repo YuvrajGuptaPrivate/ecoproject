@@ -45,7 +45,7 @@ app.post("/upload", upload.single('product'), (req, res) => {
     }
     res.json({
       success: 1,
-          image_url: `/images/${req.file.filename}`
+          image_url: `https://ecoproject-backendd.onrender.com/images/${req.file.filename}`
     })
   })
 /*app.post("/upload",upload.single('product'),(req,res)=>{
