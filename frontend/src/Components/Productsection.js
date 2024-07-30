@@ -5,13 +5,7 @@ import { Link } from 'react-router-dom'; // Import Link for routing
 function ProductSection() {
   const [newCollections, setNewCollections] = useState([]);
 
-  const getFullUrl = (path) => {
-  const protocol = window.location.protocol;
-  const hostname = window.location.hostname;
-  const port = window.location.port;
-  return `${protocol}://${hostname}:${port}/${path}`;
-};
-
+ 
 
   useEffect(() => {
     fetch(`https://ecoproject-backendd.onrender.com/newcollections`)
@@ -37,7 +31,7 @@ function ProductSection() {
               {newCollections.map((product, index) => (
                 <li key={index} className="col-md-3 product-item">
                    <Link to={`/product/${product.id}`}> {/* Use Link for routing */}
-                <img alt="" src={getFullUrl(`images/${product.image}`)} className="img-fluid product-thumbnail" style={{ width: 261, height: 261 }} />
+                <img alt="" src={`/images/${product.image}`} className="img-fluid product-thumbnail" style={{ width: 261, height: 261 }} />
                 <h3 className="product-title">{product.name}</h3>
                 <strong className="product-price">Rs{product.new_price}.00</strong>
               </Link>
