@@ -29,7 +29,7 @@ function ProductSection() {
 
           <div className="col-md-9">
             <ul className="product-list row">
-              {newCollections.map((product, index) => (
+              {newcollections.map((product, index) => (
                 <li key={index} className="col-md-3 product-item">
                    <Link to={`/product/${product.id}`}> {/* Use Link for routing */}
                 <img alt="" src={product.image} className="img-fluid product-thumbnail" style={{ width: 261, height: 261 }} />
