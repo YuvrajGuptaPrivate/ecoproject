@@ -37,7 +37,7 @@ useEffect(() => {
     const token = localStorage.getItem('token');
   if (token) {
     try {
-      const response = await fetch('http://localhost:4000/getcart', {
+      const response = await fetch(`https://ecoproject-backendd.onrender.com/getcart`, {
         method:'POST',
         headers: {
           Accept: 'application/json',
