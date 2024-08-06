@@ -1,9 +1,10 @@
 import React, { useContext} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom';
 import { CartContext } from './CartContext';
 
 const Navbar = () => {
   const {getTotalCartitems} = useContext(CartContext);
+  const currentLocation = useLocation();
   return (
       <div className="nav custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Neelkanth Curtain Store navigation bar">
       <div className="container">
@@ -14,23 +15,34 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarsFurni">
-          <ul className="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-            <li className="nav-item active">
-              <Link to='/' className="nav-link">Home</Link>
+        <ul className="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+            <li className={`nav-item ${currentLocation.pathname === '/' ? 'active' : ''}`}>
+              <Link to="/" className="nav-link">Home</Link>
             </li>
-            <li className="nav-link"><Link to='/Shop'>Shop</Link>
+            <li className={`nav-item ${currentLocation.pathname === '/Shop' ? 'active' : ''}`}>
+              <Link to="/Shop" className="nav-link">Shop</Link>
+            </li>
+            <li className={`nav-item ${currentLocation.pathname === '/About' ? 'active' : ''}`}>
+              <Link to="/About" className="nav-link">About us</Link>
+            </li>
+            <li className={`nav-item ${currentLocation.pathname === '/Services' ? 'active' : ''}`}>
+              <Link to="/Services" className="nav-link">Services</Link>
+            </li>
+            <li className={`nav-item ${currentLocation.pathname === '/Contact' ? 'active' : ''}`}>
+              <Link to="/Contact" className="nav-link">Contact us</Link>
+            </li>
+            {localStorage.getItem('token') ? (
+              <li className={`nav-item ${currentLocation.pathname === '/' ? 'active' : ''}`} onClick={() => {
+                localStorage.removeItem('token');
+                window.location.replace('/');
+              }}>
+                Logout
               </li>
-            <li className="nav-link"><Link to='/About'>About us</Link>
+            ) : (
+              <li className={`nav-item ${currentLocation.pathname === '/Login' ? 'active' : ''}`}>
+                <Link to="/Login" className="nav-link">Login</Link>
               </li>
-
-              <li className="nav-link"><Link to='/Services'> Services</Link>
-              </li>
-            <li className="nav-link"><Link to='/Contact'>Contact us</Link>
-              </li>
-              {localStorage.getItem('token')?<li className="nav-link" onClick={()=>{localStorage.removeItem('token');window.location.replace('/')}}>Logout</li>
-              :<li className="nav-link"><Link to='/Login'>Login</Link>
-              </li>}
-            
+            )}
           </ul>
           <ul className="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
             <li className="nav-link"><Link to="/Cart"><img alt="Cart" src="images/cart.svg" /></Link>
