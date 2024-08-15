@@ -16,7 +16,7 @@ const SignupLayout = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('https://ecoproject-backendd.onrender.com/signup', {
+      const response = await fetch('https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),

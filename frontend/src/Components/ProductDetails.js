@@ -16,7 +16,7 @@ async function fetchProduct(productId) {
     const headers = {
       'Content-Type': 'application/json'
     };
-    const response = await fetch(`https://ecoproject-backendd.onrender.com/allproducts/${productId}`, { headers });
+    const response = await fetch(`https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/allproducts/${productId}`, { headers });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

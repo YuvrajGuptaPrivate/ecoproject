@@ -29,7 +29,7 @@ const AddProduct = () => {
         let fromData = new FormData();
         fromData.append('product',image);
 
-        await fetch(`https://ecoproject-backendd.onrender.com/upload`,{
+        await fetch(`https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/upload`,{
             method: 'POST',
             headers:{
                 Accept:'application/json',
@@ -40,7 +40,7 @@ const AddProduct = () => {
             {
             product.image = responseData.image_url;
             console.log(product);
-            await fetch(`https://ecoproject-backendd.onrender.com/addproduct`,{
+            await fetch(`https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/addproduct`,{
                 method: 'POST',
                 headers:{
                     Accept:'application/json',

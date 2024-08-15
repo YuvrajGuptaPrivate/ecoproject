@@ -7,7 +7,7 @@ function ProductSection() {
   
 
   useEffect(() => {
-    fetch('https://ecoproject-backendd.onrender.com/newcollections')
+    fetch('https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/newcollections')
       .then(response => response.json())
       .then(data => setNewCollections(data))
       .catch(error => console.error(error));

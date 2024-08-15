@@ -37,7 +37,7 @@ useEffect(() => {
     const token = localStorage.getItem('token');
   if (token) {
     try {
-      const response = await fetch(`https://ecoproject-backendd.onrender.com/getcart`, {
+      const response = await fetch(`https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/getcart`, {
         method:'POST',
         headers: {
           Accept: 'application/json',
@@ -60,7 +60,7 @@ useEffect(() => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`https://ecoproject-backendd.onrender.com/allproducts`);
+      const response = await fetch(`https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/allproducts`);
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -73,7 +73,7 @@ useEffect(() => {
   const addToCart = (itemId) => {
     setCartItems((prev) => ({...prev, [itemId]: (prev[itemId] || 0) + 1}));
     if(localStorage.getItem('token')){
-      fetch(`https://ecoproject-backendd.onrender.com/addtocart`,{
+      fetch(`https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/addtocart`,{
         method:'POST',
         headers:{
           Accept:'application/json',
@@ -99,7 +99,7 @@ useEffect(() => {
     });
 
     if(localStorage.getItem('token')){
-      fetch(`https://ecoproject-backendd.onrender.com/removefromcart`,{
+      fetch(`https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/removefromcart`,{
         method:'POST',
         headers:{
           Accept:'application/form-data',

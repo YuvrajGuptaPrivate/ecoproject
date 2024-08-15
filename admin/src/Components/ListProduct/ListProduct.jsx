@@ -7,7 +7,7 @@ const ListProduct = () => {
   const [allproducts,setAllProducts] = useState([]);
 
   const fetchInfo = async()=>{
-    await fetch(`https://ecoproject-backendd.onrender.com/allproducts`)
+    await fetch(`https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/allproducts`)
     .then((res)=>res.json())
     .then((data)=>{setAllProducts(data)})
   }
@@ -17,7 +17,7 @@ const ListProduct = () => {
   },[])
 
   const remove_product =async(id)=>{
-    await fetch(`https://ecoproject-backendd.onrender.com/removeproduct`,{
+    await fetch(`https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/removeproduct`,{
       method:'POST',
       headers:{
         Accept:'application/json',

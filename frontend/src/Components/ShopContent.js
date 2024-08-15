@@ -11,7 +11,7 @@ function ShopContent() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('https://ecoproject-backendd.onrender.com/allproducts');
+        const response = await fetch('https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/allproducts');
         const data = await response.json();
         setProducts(data);
       } catch (error) {

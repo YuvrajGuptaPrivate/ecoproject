@@ -51,7 +51,7 @@ const BillingDetails = () => {
       phoneNumber,
       address: `${addressLine}, ${landmark}, ${city}, ${state}, ${zipCode}`,
     };
-    fetch('https://ecoproject-backendd.onrender.com/place-order', {
+    fetch('https://backendneelkanth-bdbxajfee8a6b7gw.eastus-01.azurewebsites.net/place-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(billingDetails),
