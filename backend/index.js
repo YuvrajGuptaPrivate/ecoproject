@@ -1,6 +1,7 @@
 const port =  process.env.PORT||4000;
 const express = require("express");
 const app = express();
+const Grid = require("gridfs-stream");
 const mongoose = require("mongoose"); 
 const jwt = require("jsonwebtoken"); 
 const multer = require("multer");
@@ -27,104 +28,128 @@ app.get("/",(req,res)=>{
     res.send("Express App is Running")
 })
 
-// image storage engine
-const storage = multer.diskStorage({
-    destination: './upload/images',
-    filename: (req,file,cb)=>{
-        return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    }
-})
+// Middleware
+app.use(express.json());
+app.use(cors());
 
-const upload = multer({storage:storage})
-//creating upload endpoint for image
-app.use('/images',express.static('upload/images'))
+// MongoDB connection
+const mongoURI = "mongodb+srv://yuvrajgupta1125:GZ82BsRySmobqWDB@cluster0.keahlf6.mongodb.net/e-commarce";
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-app.post("/upload", upload.single('product'), (req, res) => {
+// Create mongo connection for GridFS
+const conn = mongoose.createConnection(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+let gfs;
+conn.once("open", () => {
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection("uploads"); // Set the collection name
+});
+
+// Multer storage configuration
+const storage = multer.memoryStorage(); // Store files in memory
+const upload = multer({ storage: storage });
+
+// API to upload images
+app.post("/upload", upload.single("productImage"), (req, res) => {
     if (!req.file) {
-      return res.status(400).json({ success: 0, message: 'No file uploaded' });
+        return res.status(400).json({ success: 0, message: "No file uploaded" });
     }
-    res.json({
-      success: 1,
-          image_url: `https://ecoproject-backendd.onrender.com/images/${req.file.filename}`
-    })
-  })
-/*app.post("/upload",upload.single('product'),(req,res)=>{
-    res.json({
-      success: 1,
-      image_url: `http://localhost:${port}/images/${req.file.filename}`
-    })
-  })
-*/
 
-
-//Schema for creating products
-
-const Product = mongoose.model("Product",{
-    id:{
-        type: Number,
-        required:true,
-    },
-    name:{
-        type:String,
-        required:true,
-    },
-    image:{
-        type:String,
-        required:true,
-    },
-    category:{
-        type:String,
-        required:true,
-    },
-    new_price:{
-        type:Number,
-        required:true,
-    },
-    old_price:{
-        type:Number,
-        required:true,
-    },
-    date:{
-        type:Date,
-        default:Date.now,
-    },
-    avilable:{
-        type:Boolean,
-        required:true,
-    },
-})
-
-app.post('/addproduct',async(req,res)=>{
-    let products = await Product.find({});
-    let id;
-    if(products.length>0)
-    {
-        let last_product_array = products.slice(-1);
-        let last_product = last_product_array[0];
-        id = last_product.id+1;
-    }
-    else{
-        id=1;
-    }
-    const product=new Product({
-        id:id,
-        name:req.body.name,
-        image:req.body.image,
-        category:req.body.category,
-        new_price:req.body.new_price,
-        old_price:req.body.old_price,
-        avilable:true,
+    // Create a write stream to GridFS
+    const writeStream = gfs.createWriteStream({
+        filename: `${req.file.fieldname}_${Date.now()}${path.extname(req.file.originalname)}`,
+        content_type: req.file.mimetype,
     });
-    console.log(product);
+
+    writeStream.on("close", (file) => {
+        res.json({
+            success: 1,
+            image_url: `https://ecoproject-backendd.onrender.com/api/files/${file._id}`
+        });
+    });
+
+    writeStream.write(req.file.buffer);
+    writeStream.end();
+});
+
+// Endpoint to serve images from GridFS
+app.get("/api/files/:id", (req, res) => {
+    gfs.files.findOne({ _id: mongoose.Types.ObjectId(req.params.id) }, (err, file) => {
+        if (!file || file.length === 0) {
+            return res.status(404).json({ err: "No file exists" });
+        }
+
+        if (file.contentType === "image/jpeg" || file.contentType === "image/png") {
+            const readstream = gfs.createReadStream(file._id);
+            readstream.pipe(res);
+        } else {
+            res.status(404).json({ err: "Not an image" });
+        }
+    });
+});
+
+// Product Schema
+const Product = mongoose.model("Product", {
+    id: {
+        type: Number,
+        required: true,
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    image: {
+        type: String,
+        required: true,
+    },
+    category: {
+        type: String,
+        required: true,
+    },
+    new_price: {
+        type: Number,
+        required: true,
+    },
+    old_price: {
+        type: Number,
+        required: true,
+    },
+    date: {
+        type: Date,
+        default: Date.now,
+    },
+    available: {
+        type: Boolean,
+        required: true,
+    },
+});
+
+// Create product endpoint with image upload
+app.post('/addproduct', async (req, res) => {
+    const products = await Product.find({});
+    let id;
+    if (products.length > 0) {
+        const last_product = products[products.length - 1];
+        id = last_product.id + 1;
+    } else {
+        id = 1;
+    }
+
+    const product = new Product({
+        id: id,
+        name: req.body.name,
+        image: req.body.image, // This will be the URL from the upload endpoint
+        category: req.body.category,
+        new_price: req.body.new_price,
+        old_price: req.body.old_price,
+        available: true,
+    });
+
     await product.save();
-    console.log("Saved");
     res.json({
-        success:true,
-        name:req.body.name,
-    })
-})
-
-
+        success: true,
+        name: req.body.name,
+    });
+});
 
 //Creating Api for deleting products
 
